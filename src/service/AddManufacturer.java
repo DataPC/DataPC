@@ -27,7 +27,7 @@ public class AddManufacturer {
      * @return
      */
     @GET
-    public String setId(@QueryParam("name") String name) {   
+    public boolean add(@QueryParam("name") String name) {   
     	try {
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
@@ -40,13 +40,16 @@ public class AddManufacturer {
 			query.setString(1, name);
 			
 			query.executeUpdate();
-		
+			
+			query.close();
+			
+			return true;
     	} catch (NamingException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
-    	return "chyba";   	
+    	return false;   	
     }
     
 }

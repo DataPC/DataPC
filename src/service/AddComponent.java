@@ -27,7 +27,7 @@ public class AddComponent {
      * @return
      */
     @GET
-    public String setId(@QueryParam("pc") int pc, @QueryParam("model") int model) {   
+    public boolean add(@QueryParam("pc") int pc, @QueryParam("model") int model) {   
     	try {
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
@@ -41,13 +41,16 @@ public class AddComponent {
 			query.setInt(2, model);
 			
 			query.executeUpdate();
-		
+			
+			query.close();
+			
+			return true;
     	} catch (NamingException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
-    	return "chyba";    	
+    	return false;    	
     }
     
 }

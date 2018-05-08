@@ -16,13 +16,13 @@ import javax.ws.rs.QueryParam;
  */
 @Stateless
 @LocalBean
-@Path("/get")
-public class GetService {
+@Path("/getPCInfo")
+public class GetPCInfo {
 
     /**
      * Default constructor. 
      */
-    public GetService() {
+    public GetPCInfo() {
     }
 
     /**
@@ -31,7 +31,7 @@ public class GetService {
      * @return
      */
     @GET
-    public String findId(@QueryParam("id") int id) {
+    public String getPCInfo(@QueryParam("id") int id) {
     	try {
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
@@ -71,7 +71,6 @@ public class GetService {
 			
 			return vysledok;
 			
-			
     	} catch (NamingException e) {
 			// TODO Zalogovat vyminku
 			e.printStackTrace();
@@ -80,6 +79,6 @@ public class GetService {
 			e.printStackTrace();
 		}
 		
-    	return "chyba";   	
+    	return null;   	
     }
 }

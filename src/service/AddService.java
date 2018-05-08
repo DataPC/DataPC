@@ -1,7 +1,10 @@
 package service;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Calendar;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
@@ -11,13 +14,13 @@ import javax.ws.rs.QueryParam;
 
 @Stateless
 @LocalBean
-@Path("/addCType")
-public class AddComponentType {
+@Path("/addService")
+public class AddService {
 
     /**
      * Default constructor. 
      */
-    public AddComponentType() {
+    public AddService() {
     }
 
     /**
@@ -26,17 +29,21 @@ public class AddComponentType {
      * @return
      */
     @GET
-    public boolean add(@QueryParam("name") String name) {   
+    public boolean add(@QueryParam("PC") int PC, @QueryParam("st") int st) {   
     	try {
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Component_type(name) values(?);";
+			String add = "INSERT INTO Service(computer_id, service_type_id, service_date) values(?,?,?);";
+			
+			Date datum = new Date(Calendar.getInstance().getTime().getTime());
 			
 			PreparedStatement query = con.prepareStatement(add);
-			query.setString(1, name);
+			query.setInt(1, PC);
+			query.setInt(2, st);
+			query.setDate(3, datum);
 			
 			query.executeUpdate();
 			
@@ -48,7 +55,7 @@ public class AddComponentType {
 			e.printStackTrace();
 		}
     	
-    	return false;    	
+    	return false;   	
     }
     
 }

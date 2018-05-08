@@ -2,6 +2,7 @@ package service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
@@ -11,13 +12,13 @@ import javax.ws.rs.QueryParam;
 
 @Stateless
 @LocalBean
-@Path("/addCType")
-public class AddComponentType {
+@Path("/addServiceType")
+public class AddServiceType {
 
     /**
      * Default constructor. 
      */
-    public AddComponentType() {
+    public AddServiceType() {
     }
 
     /**
@@ -33,8 +34,8 @@ public class AddComponentType {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Component_type(name) values(?);";
-			
+			String add = "INSERT INTO Service_type(name) values(?);";
+
 			PreparedStatement query = con.prepareStatement(add);
 			query.setString(1, name);
 			
@@ -48,7 +49,7 @@ public class AddComponentType {
 			e.printStackTrace();
 		}
     	
-    	return false;    	
+    	return false;   	
     }
     
 }

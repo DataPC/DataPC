@@ -27,7 +27,7 @@ public class AddModel {
      * @return
      */
     @GET
-    public String setId(@QueryParam("man") int man, @QueryParam("ct") int ct, @QueryParam("name") String name) {   
+    public boolean add(@QueryParam("man") int man, @QueryParam("ct") int ct, @QueryParam("name") String name) {   
     	try {
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
@@ -42,13 +42,16 @@ public class AddModel {
 			query.setString(3, name);
 			
 			query.executeUpdate();
-		
+			
+			query.close();
+			
+			return true;
     	} catch (NamingException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
-    	return "chyba";    	
+    	return false;    	
     }
     
 }
