@@ -1,6 +1,7 @@
 package service;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -10,6 +11,8 @@ import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+
+import org.json.simple.JSONObject;
 
 /**
  * Stateless session bean-a s jednoduchou sluzbou
@@ -39,20 +42,46 @@ public class GetService {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String query = "SELECT array_to_json(array_agg(row_to_json(t))) " + 
-					"FROM (SELECT PC.location, ct.name, m.name, ma.name " + 
+			
+			String query ="select row_to_json(t) " +
+					"from ( "+
+					"SELECT PC.location, " +
+					"( "+
+					"	SELECT array_to_json(array_agg(row_to_json(d))) " +
+					"	FROM ( " +
+					"	SELECT ct.name AS ct_name, ma.name AS ma_name, m.name AS m_name	" +
+					"	FROM Component c " +
+					"		LEFT JOIN Model m on m.id = c.model_id " + 
+					"		LEFT JOIN Manufacturer ma on ma.id = m.manufacturer_id " +
+					"		LEFT JOIN Component_type ct on ct.id = m.component_type_id " +
+					"	WHERE c.computer_id = ? " +
+					"	) d" +
+					"	) as pomoc " +
+					" FROM Computer PC " +
+					" WHERE PC.id = ? " +
+					") t; ";
+			
+			
+			/*
+			String query = "SELECT PC.location, ct.name, m.name, ma.name " + 
 					"FROM Computer PC " + 
 					"LEFT JOIN Component c on PC.id = c.computer_id " + 
 					"LEFT JOIN Component_type ct on c.component_type_id = ct.id " + 
 					"LEFT JOIN Model m on c.model_id = m.id " + 
 					"LEFT JOIN Manufacturer ma on m.manufacturer_id = ma.id " + 
-					"WHERE PC.id = ?) t;";
+					"WHERE PC.id = ?;";*/
+			
+			
 			
 			PreparedStatement select = con.prepareStatement(query);
 			select.setInt(1, id);
+			select.setInt(2, id);
+			
+			System.out.println(query);
 			
 			ResultSet rs = select.executeQuery();
 			rs.next();
+			
 			String vysledok = rs.getString(1);
 			
 			rs.close();

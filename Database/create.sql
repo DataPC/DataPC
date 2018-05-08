@@ -17,12 +17,12 @@ CREATE TABLE Manufacturer(
 CREATE TABLE Model(
 	id SERIAL PRIMARY KEY,
 	manufacturer_id SERIAL references Manufacturer(id),
+	component_type_id INT references Component_type(id),
 	name VARCHAR
 );
 
 CREATE TABLE Component(
 	id SERIAL PRIMARY KEY,
-	component_type_id INT references Component_type(id),
 	computer_id INT references Computer(id),
 	model_id INT references Model(id)
 );
@@ -43,5 +43,5 @@ CREATE TABLE Service(
 	computer_id INT references Computer(id),
 	service_type_id INT references Service_type(id),
 	technician_id INT references Technician(id),
-	service_date DATE
+	servie_date DATE
 );
