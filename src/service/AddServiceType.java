@@ -2,7 +2,6 @@ package service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
@@ -22,9 +21,9 @@ public class AddServiceType {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Prida novy typ servisu do databazy
+     * @param name Nazov noveho typu servisu
+     * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
     public boolean add(@QueryParam("name") String name) {   
@@ -34,7 +33,7 @@ public class AddServiceType {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Service_type(name) values(?);";
+			String add = "INSERT INTO Service_type (name) VALUES (?);";
 
 			PreparedStatement query = con.prepareStatement(add);
 			query.setString(1, name);
@@ -44,12 +43,14 @@ public class AddServiceType {
 			query.close();
 			
 			return true;
-    	} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+    	} catch (NamingException e) {
+			// TODO Zalogovat vyminku
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Zalogovat vyminku
 			e.printStackTrace();
 		}
     	
     	return false;   	
     }
-    
 }

@@ -16,7 +16,7 @@ import javax.ws.rs.QueryParam;
  */
 @Stateless
 @LocalBean
-@Path("/getPCInfo")
+@Path("/getServiceInfo")
 public class GetServiceInfo {
 
     /**
@@ -26,9 +26,9 @@ public class GetServiceInfo {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Z databazy ziska vsetky servisy daneho pocitaca
+     * @param id ID daneho pocitaca
+     * @return JSON s polom servisov daneho pocitaca
      */
     @GET
     public String getServiceInfo(@QueryParam("id") int id) {

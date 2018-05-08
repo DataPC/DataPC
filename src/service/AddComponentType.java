@@ -21,9 +21,9 @@ public class AddComponentType {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Prida novy typ komponentu do databazy
+     * @param name Meno noveho typu komponentu
+     * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
     public boolean add(@QueryParam("name") String name) {   
@@ -33,7 +33,7 @@ public class AddComponentType {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Component_type(name) values(?);";
+			String add = "INSERT INTO Component_type (name) VALUES (?);";
 			
 			PreparedStatement query = con.prepareStatement(add);
 			query.setString(1, name);
@@ -43,12 +43,14 @@ public class AddComponentType {
 			query.close();
 			
 			return true;
-    	} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+    	} catch (NamingException e) {
+			// TODO Zalogovat vyminku
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Zalogovat vyminku
 			e.printStackTrace();
 		}
     	
     	return false;    	
     }
-    
 }

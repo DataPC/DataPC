@@ -1,6 +1,5 @@
 package service;
 
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.ejb.LocalBean;
@@ -12,7 +11,7 @@ import javax.ws.rs.QueryParam;
 
 @Stateless
 @LocalBean
-@Path("/addCType")
+@Path("/addComponent")
 public class AddComponent {
 
     /**
@@ -22,9 +21,10 @@ public class AddComponent {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Prida novy komponent do databazy
+     * @param pc ID pocitaca, ktoremu dany komponent prislucha
+     * @param model ID modelu daneho komponentu
+     * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
     public boolean add(@QueryParam("pc") int pc, @QueryParam("model") int model) {   
@@ -34,7 +34,7 @@ public class AddComponent {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Component(computer_id, model_id) values(?,?); ";
+			String add = "INSERT INTO Component (computer_id, model_id) VALUES (?,?);";
 			
 			PreparedStatement query = con.prepareStatement(add);
 			query.setInt(1, pc);
@@ -45,12 +45,14 @@ public class AddComponent {
 			query.close();
 			
 			return true;
-    	} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+    	} catch (NamingException e) {
+			// TODO Zalogovat vyminku
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Zalogovat vyminku
 			e.printStackTrace();
 		}
     	
     	return false;    	
     }
-    
 }

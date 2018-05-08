@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
-
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
@@ -24,9 +23,10 @@ public class AddService {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Prida novy servis (opravu, udrzbu...) danemu pocitacu
+     * @param pc ID daneho pocitaca
+     * @param st Typ daneho servisu
+     * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
     public boolean add(@QueryParam("PC") int PC, @QueryParam("st") int st) {   
@@ -36,7 +36,7 @@ public class AddService {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Service(computer_id, service_type_id, service_date) values(?,?,?);";
+			String add = "INSERT INTO Service (computer_id, service_type_id, service_date) VALUES (?,?,?);";
 			
 			Date datum = new Date(Calendar.getInstance().getTime().getTime());
 			
@@ -50,12 +50,14 @@ public class AddService {
 			query.close();
 			
 			return true;
-    	} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+    	} catch (NamingException e) {
+			// TODO Zalogovat vyminku
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Zalogovat vyminku
 			e.printStackTrace();
 		}
     	
     	return false;   	
     }
-    
 }

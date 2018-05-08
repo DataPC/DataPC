@@ -1,6 +1,5 @@
 package service;
 
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.ejb.LocalBean;
@@ -22,9 +21,9 @@ public class AddManufacturer {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Prida noveho vyrobcu komponentov do databazy
+     * @param name Meno noveho vyrobcu
+     * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
     public boolean add(@QueryParam("name") String name) {   
@@ -34,7 +33,7 @@ public class AddManufacturer {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Manufacturer(name) values(?);";
+			String add = "INSERT INTO Manufacturer (name) VALUES (?);";
 			
 			PreparedStatement query = con.prepareStatement(add);
 			query.setString(1, name);
@@ -44,12 +43,14 @@ public class AddManufacturer {
 			query.close();
 			
 			return true;
-    	} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+    	} catch (NamingException e) {
+			// TODO Zalogovat vyminku
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Zalogovat vyminku
 			e.printStackTrace();
 		}
     	
     	return false;   	
     }
-    
 }

@@ -26,9 +26,9 @@ public class GetPCInfo {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Z databazy ziska informacie o pocitaci
+     * @param id ID daneho pocitaca
+     * @return JSON s informaciami o pocitaci
      */
     @GET
     public String getPCInfo(@QueryParam("id") int id) {
@@ -39,20 +39,20 @@ public class GetPCInfo {
 			java.sql.Connection con = ds.getConnection();
 			
 			
-			String query ="select row_to_json(t) " +
-					"from ( "+
+			String query ="SELECT row_to_json(t) " +
+					"FROM ( "+
 					"SELECT PC.location, " +
 					"( "+
 					"	SELECT array_to_json(array_agg(row_to_json(d))) " +
 					"	FROM ( " +
 					"	SELECT ct.name AS ct_name, ma.name AS ma_name, m.name AS m_name	" +
 					"	FROM Component c " +
-					"		LEFT JOIN Model m on m.id = c.model_id " + 
-					"		LEFT JOIN Manufacturer ma on ma.id = m.manufacturer_id " +
-					"		LEFT JOIN Component_type ct on ct.id = m.component_type_id " +
+					"		LEFT JOIN Model m ON m.id = c.model_id " + 
+					"		LEFT JOIN Manufacturer ma ON ma.id = m.manufacturer_id " +
+					"		LEFT JOIN Component_type ct ON ct.id = m.component_type_id " +
 					"	WHERE c.computer_id = ? " +
 					"	) d" +
-					"	) as pomoc " +
+					"	) AS pomoc " +
 					" FROM Computer PC " +
 					" WHERE PC.id = ? " +
 					") t; ";	
@@ -70,7 +70,6 @@ public class GetPCInfo {
 			select.close();
 			
 			return vysledok;
-			
     	} catch (NamingException e) {
 			// TODO Zalogovat vyminku
 			e.printStackTrace();

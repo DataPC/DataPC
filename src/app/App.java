@@ -1,7 +1,6 @@
 package app;
 
 import java.util.HashSet;
-
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -31,5 +30,4 @@ public class App extends Application {
 		cls.add(AddServiceType.class);
 		return cls;
 	}
-
 }

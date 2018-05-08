@@ -1,6 +1,5 @@
 package service;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,9 +22,9 @@ public class AddComputer {
     }
 
     /**
-     * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param id
-     * @return
+     * Prida novy pocitac do databazy
+     * @param location Pozicia noveho pocitaca
+     * @return JSON s ID a location novo vytvoreneho pocitaca
      */
     @GET
     public String add(@QueryParam("location") String location) {   
@@ -37,7 +36,7 @@ public class AddComputer {
 			
 			con.setAutoCommit(false);
 			
-			String add = "INSERT INTO Computer(location) values(?);";
+			String add = "INSERT INTO Computer (location) VALUES (?);";
 			
 			String find = "SELECT row_to_json(t) " +
 					" FROM ( " +
@@ -48,13 +47,12 @@ public class AddComputer {
 			PreparedStatement query = con.prepareStatement(add);
 			query.setString(1, location);
 			
-			PreparedStatement query2 = con.prepareStatement(find);
-			
 			query.executeUpdate();
+			
+			PreparedStatement query2 = con.prepareStatement(find);
 		
 			ResultSet rs = query2.executeQuery();
 			rs.next();
-			
 			
 			String vysledok = rs.getString(1);
 			
@@ -64,15 +62,16 @@ public class AddComputer {
 			
 			con.commit();
 			con.setAutoCommit(true);
+			
 			return vysledok;
-			
-			
-    	} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+    	} catch (NamingException e) {
+			// TODO Zalogovat vyminku
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Zalogovat vyminku
 			e.printStackTrace();
 		}
     	
     	return null;   	
     }
-    
 }
