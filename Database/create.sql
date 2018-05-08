@@ -27,12 +27,6 @@ CREATE TABLE Component(
 	model_id INT references Model(id)
 );
 
-CREATE TABLE Technician(
-	id SERIAL PRIMARY KEY,
-	name VARCHAR UNIQUE,
-	login VARCHAR
-);
-
 CREATE TABLE Service_type(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR UNIQUE
@@ -42,6 +36,5 @@ CREATE TABLE Service(
 	id SERIAL PRIMARY KEY,
 	computer_id INT references Computer(id),
 	service_type_id INT references Service_type(id),
-	technician_id INT references Technician(id),
 	servie_date DATE
 );

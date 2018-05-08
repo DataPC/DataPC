@@ -59,25 +59,11 @@ public class GetService {
 					"	) as pomoc " +
 					" FROM Computer PC " +
 					" WHERE PC.id = ? " +
-					") t; ";
-			
-			
-			/*
-			String query = "SELECT PC.location, ct.name, m.name, ma.name " + 
-					"FROM Computer PC " + 
-					"LEFT JOIN Component c on PC.id = c.computer_id " + 
-					"LEFT JOIN Component_type ct on c.component_type_id = ct.id " + 
-					"LEFT JOIN Model m on c.model_id = m.id " + 
-					"LEFT JOIN Manufacturer ma on m.manufacturer_id = ma.id " + 
-					"WHERE PC.id = ?;";*/
-			
-			
+					") t; ";	
 			
 			PreparedStatement select = con.prepareStatement(query);
 			select.setInt(1, id);
 			select.setInt(2, id);
-			
-			System.out.println(query);
 			
 			ResultSet rs = select.executeQuery();
 			rs.next();
@@ -95,7 +81,7 @@ public class GetService {
 			e.printStackTrace();
 		}
 		
-    	return "ID: " + id;   	
+    	return "chyba";   	
     }
     
 }

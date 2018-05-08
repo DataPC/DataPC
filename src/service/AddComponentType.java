@@ -12,13 +12,13 @@ import javax.ws.rs.QueryParam;
 
 @Stateless
 @LocalBean
-@Path("/addManufacturer")
-public class AddManufacturer {
+@Path("/addCType")
+public class AddComponentType {
 
     /**
      * Default constructor. 
      */
-    public AddManufacturer() {
+    public AddComponentType() {
     }
 
     /**
@@ -34,7 +34,7 @@ public class AddManufacturer {
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
 			java.sql.Connection con = ds.getConnection();
 			
-			String add = "INSERT INTO Manufacturer(name) values(?);";
+			String add = "INSERT INTO Component_type(name) values(?);";
 			
 			PreparedStatement query = con.prepareStatement(add);
 			query.setString(1, name);
@@ -46,7 +46,7 @@ public class AddManufacturer {
 			e.printStackTrace();
 		}
     	
-    	return "chyba";   	
+    	return "chyba";    	
     }
     
 }
