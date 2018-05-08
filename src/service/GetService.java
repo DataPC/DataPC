@@ -8,31 +8,27 @@ import javax.ws.rs.QueryParam;
 
 /**
  * Stateless session bean-a s jednoduchou sluzbou
- * @author Jaroslav Jakubik
+ * @author DataPC
  */
 @Stateless
 @LocalBean
-@Path("/vypis")
-public class Service {
+@Path("/get")
+public class GetService {
 
     /**
      * Default constructor. 
      */
-    public Service() {
+    public GetService() {
     }
 
     /**
      * Jednoducha sluzba na stateless bean-e, publikovana cez GET REST
-     * @param who
+     * @param id
      * @return
      */
     @GET
-    public String sayHello(@QueryParam("who") String who) {
-    	return "hello " + who;   	
-    }
-    @GET
-    public String nieco(@QueryParam("test") String who) {
-    	return "hello " + who;   	
+    public String findId(@QueryParam("id") String id) {
+    	return "Find ID: " + id;   	
     }
     
 }
