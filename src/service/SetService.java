@@ -1,5 +1,6 @@
 package service;
 
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
@@ -23,7 +24,7 @@ public class SetService {
      * @return
      */
     @GET
-    public String setId(@QueryParam("id") String id) {
+    public String setId(@QueryParam("id") String id) {    	
     	return "Set ID: " + id;   	
     }
     

@@ -1,6 +1,7 @@
 
 CREATE TABLE Computer(
-	id SERIAL PRIMARY KEY
+	id SERIAL PRIMARY KEY,
+	location varchar
 );
 
 CREATE TABLE Component_type(
@@ -42,5 +43,5 @@ CREATE TABLE Service(
 	computer_id INT references Computer(id),
 	service_type_id INT references Service_type(id),
 	technician_id INT references Technician(id),
-	servie_date DATE
+	service_date DATE
 );
