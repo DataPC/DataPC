@@ -1,18 +1,14 @@
 package service;
 
 import java.sql.PreparedStatement;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
-
-import org.json.simple.JSONObject;
 
 /**
  * Stateless session bean-a s jednoduchou sluzbou
@@ -76,12 +72,14 @@ public class GetService {
 			return vysledok;
 			
 			
-    	} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+    	} catch (NamingException e) {
+			// TODO Zalogovat vyminku
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Zalogovat vyminku
 			e.printStackTrace();
 		}
 		
     	return "chyba";   	
     }
-    
 }
