@@ -2,12 +2,14 @@ package service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import logger.Logging;
 
 @Stateless
 @LocalBean
@@ -15,18 +17,20 @@ import javax.ws.rs.QueryParam;
 public class DeleteComponent {
 
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public DeleteComponent() {
     }
 
     /**
      * Odstrani komponent z PC
-     * @param ID komponentu
+     * @param com ID komponentu
      * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
-    public boolean add(@QueryParam("component") int com) {   
+    public boolean add(@QueryParam("component") int com) {
+    	Logger LOG = Logging.getLogger();
+    	
     	try {
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
@@ -44,10 +48,10 @@ public class DeleteComponent {
 			
 			return true;
     	} catch (NamingException e) {
-			// TODO Zalogovat vyminku
+    		LOG.severe(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Zalogovat vyminku
+			LOG.severe(e.toString());
 			e.printStackTrace();
 		}
     	

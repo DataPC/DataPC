@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import logger.Logging;
 
 @Stateless
 @LocalBean
@@ -29,8 +31,12 @@ public class AddService {
      * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
-    public boolean add(@QueryParam("PC") int PC, @QueryParam("st") int st) {   
+    public boolean add(@QueryParam("PC") int PC, @QueryParam("st") int st) {
+    	Logger LOG = Logging.getLogger();
+    	
     	try {
+    		LOG.info("Pridavanie servisu");
+    		
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
@@ -49,12 +55,13 @@ public class AddService {
 			
 			query.close();
 			
+			LOG.info("Pridany servis");
 			return true;
     	} catch (NamingException e) {
-			// TODO Zalogovat vyminku
+    		LOG.severe(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Zalogovat vyminku
+			LOG.severe(e.toString());
 			e.printStackTrace();
 		}
     	

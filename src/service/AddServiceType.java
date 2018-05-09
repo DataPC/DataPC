@@ -2,12 +2,14 @@ package service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import logger.Logging;
 
 @Stateless
 @LocalBean
@@ -15,7 +17,7 @@ import javax.ws.rs.QueryParam;
 public class AddServiceType {
 
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public AddServiceType() {
     }
@@ -26,8 +28,12 @@ public class AddServiceType {
      * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
-    public boolean add(@QueryParam("name") String name) {   
+    public boolean add(@QueryParam("name") String name) {
+    	Logger LOG = Logging.getLogger();
+    	
     	try {
+    		LOG.info("Pridavanie typu servisu");
+    		
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
@@ -42,12 +48,13 @@ public class AddServiceType {
 			
 			query.close();
 			
+			LOG.info("Pridany typ servisu");
 			return true;
     	} catch (NamingException e) {
-			// TODO Zalogovat vyminku
+    		LOG.severe(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Zalogovat vyminku
+			LOG.severe(e.toString());
 			e.printStackTrace();
 		}
     	

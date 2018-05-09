@@ -3,11 +3,13 @@ package service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 import javax.ejb.*;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import logger.Logging;
 
 @Stateless
 @LocalBean
@@ -16,7 +18,7 @@ import javax.ws.rs.QueryParam;
 public class AddComputer {
 
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public AddComputer() {
     }
@@ -27,8 +29,12 @@ public class AddComputer {
      * @return JSON s ID a location novo vytvoreneho pocitaca
      */
     @GET
-    public String add(@QueryParam("location") String location) {   
+    public String add(@QueryParam("location") String location) {
+    	Logger LOG = Logging.getLogger();
+    	
     	try {
+    		LOG.info("Pridavanie pocitaca");
+    		
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
@@ -63,12 +69,13 @@ public class AddComputer {
 			con.commit();
 			con.setAutoCommit(true);
 			
+			LOG.info("Pridany pocitac");
 			return vysledok;
     	} catch (NamingException e) {
-			// TODO Zalogovat vyminku
+    		LOG.severe(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Zalogovat vyminku
+			LOG.severe(e.toString());
 			e.printStackTrace();
 		}
     	

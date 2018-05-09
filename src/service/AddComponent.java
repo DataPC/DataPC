@@ -3,7 +3,6 @@ package service;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
@@ -16,17 +15,13 @@ import logger.Logging;
 @LocalBean
 @Path("/addComponent")
 public class AddComponent {
-
-    /**
-     * Default constructor. 
+	
+	/**
+     * Default constructor.
      */
-	
-	Logger LOG = null;
-	
     public AddComponent() {
-    	LOG = Logging.getLogger();
     }
-
+	
     /**
      * Prida novy komponent do databazy
      * @param pc ID pocitaca, ktoremu dany komponent prislucha
@@ -35,6 +30,8 @@ public class AddComponent {
      */
     @GET
     public boolean add(@QueryParam("pc") int pc, @QueryParam("model") int model) {   
+    	Logger LOG = Logging.getLogger();
+    	
     	try {
     		LOG.info("Pridavanie komponentu");
     		
@@ -49,11 +46,11 @@ public class AddComponent {
 			query.setInt(1, pc);
 			query.setInt(2, model);
 			
-			LOG.finest("Query pripravena");
 			query.executeUpdate();
-			LOG.finest("Query vykonana");
+			
 			query.close();
 			
+			LOG.info("Pridany komponent");
 			return true;
     	} catch (NamingException e) {
 			LOG.severe(e.toString());

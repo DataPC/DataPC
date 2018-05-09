@@ -3,12 +3,14 @@ package service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import logger.Logging;
 
 /**
  * Stateless session bean-a s jednoduchou sluzbou
@@ -20,7 +22,7 @@ import javax.ws.rs.QueryParam;
 public class GetPCInfo {
 
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public GetPCInfo() {
     }
@@ -32,7 +34,11 @@ public class GetPCInfo {
      */
     @GET
     public String getPCInfo(@QueryParam("id") int id) {
+    	Logger LOG = Logging.getLogger();
+    	
     	try {
+    		LOG.info("Ziskavane informacie o pocitaci s ID " + id);
+    		
     		javax.naming.Context ic = new javax.naming.InitialContext();
 			javax.naming.Context ctx = (javax.naming.Context) ic.lookup("java:");
 			javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("PostgresDS");
@@ -69,12 +75,13 @@ public class GetPCInfo {
 			rs.close();
 			select.close();
 			
+    		LOG.info("Ziskane informacie o pocitaci s ID " + id);
 			return vysledok;
     	} catch (NamingException e) {
-			// TODO Zalogovat vyminku
+    		LOG.severe(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Zalogovat vyminku
+			LOG.severe(e.toString());
 			e.printStackTrace();
 		}
 		
