@@ -28,6 +28,7 @@ public class App extends Application {
 		cls.add(AddModel.class);
 		cls.add(AddService.class);
 		cls.add(AddServiceType.class);
+		cls.add(DeleteComponent.class);
 		return cls;
 	}
 }

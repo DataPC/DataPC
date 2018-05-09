@@ -45,7 +45,7 @@ public class GetPCInfo {
 					"( "+
 					"	SELECT array_to_json(array_agg(row_to_json(d))) " +
 					"	FROM ( " +
-					"	SELECT ct.name AS ct_name, ma.name AS ma_name, m.name AS m_name	" +
+					"	SELECT ct.name AS ct_name, ma.name AS ma_name, m.name AS m_name, c.id" +
 					"	FROM Component c " +
 					"		LEFT JOIN Model m ON m.id = c.model_id " + 
 					"		LEFT JOIN Manufacturer ma ON ma.id = m.manufacturer_id " +
