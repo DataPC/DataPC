@@ -22,8 +22,7 @@ public class DeleteComponent {
 
     /**
      * Odstrani komponent z PC
-     * @param pc ID pocitaca, ktoremu dany komponent prislucha
-     * @param ID daneho komponentu
+     * @param ID komponentu
      * @return true - ak zbehne korektne, false - ak nie
      */
     @GET
