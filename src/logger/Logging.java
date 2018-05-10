@@ -18,7 +18,7 @@ public class Logging {
         try {
         	LOG = Logger.getLogger("ServerLog");
         	
-        	logFile = new FileHandler("logger.log");
+        	logFile = new FileHandler("C:\\Users\\halas\\Desktop\\logger.log", true);
         	LOG.addHandler(logFile);
         	
         	formatter = new SimpleFormatter();

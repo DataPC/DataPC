@@ -47,18 +47,18 @@ public class GetPCInfo {
 			
 			String query ="SELECT row_to_json(t) " +
 					"FROM ( "+
-					"SELECT PC.location, " +
+					"SELECT PC.id, PC.location, " +
 					"( "+
 					"	SELECT array_to_json(array_agg(row_to_json(d))) " +
 					"	FROM ( " +
-					"	SELECT ct.name AS ct_name, ma.name AS ma_name, m.name AS m_name, c.id" +
+					"	SELECT c.id, ct.name AS ct_name, ma.name AS ma_name, m.name AS m_name" +
 					"	FROM Component c " +
 					"		LEFT JOIN Model m ON m.id = c.model_id " + 
 					"		LEFT JOIN Manufacturer ma ON ma.id = m.manufacturer_id " +
 					"		LEFT JOIN Component_type ct ON ct.id = m.component_type_id " +
 					"	WHERE c.computer_id = ? " +
 					"	) d" +
-					"	) AS pomoc " +
+					"	) AS komponenty " +
 					" FROM Computer PC " +
 					" WHERE PC.id = ? " +
 					") t; ";	
